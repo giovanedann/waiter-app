@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { createCategory, deleteCategory, listCategories } from './app/use-cases/categories';
+import { createProduct, deleteProduct, listProducts } from './app/use-cases/products';
 
 export const router = Router();
 
@@ -13,14 +14,13 @@ router.post('/categories', createCategory);
 router.delete('/categories/:categoryId', deleteCategory);
 
 // List products
-router.get('/products', (request, response) => {
-  response.send('List products');
-});
+router.get('/products', listProducts);
 
 // Create product
-router.post('/products', (request, response) => {
-  response.send('Create product');
-});
+router.post('/products', createProduct);
+
+// Delete product
+router.delete('/products/:productId', deleteProduct);
 
 // Get products by category
 router.get('/categories/:categoryId/products', (request, response) => {
