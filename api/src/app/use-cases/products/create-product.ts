@@ -2,11 +2,12 @@ import { Request, Response } from 'express';
 import { Product } from '../../models/Product';
 
 export async function createProduct(request: Request, response: Response) {
+  const imagePath = request.file?.filename;
+
   try {
     const {
       category,
       description,
-      imagePath,
       ingredients,
       name,
       price
@@ -16,9 +17,9 @@ export async function createProduct(request: Request, response: Response) {
       category,
       description,
       imagePath,
-      ingredients,
+      ingredients: JSON.parse(ingredients),
       name,
-      price
+      price: Number(price)
     });
 
     response.status(201).json(newProduct);

@@ -1,8 +1,23 @@
+import path from 'node:path';
 import { Router } from 'express';
+import multer from 'multer';
+
 import { createCategory, deleteCategory, listCategories } from './app/use-cases/categories';
 import { createProduct, deleteProduct, listProducts } from './app/use-cases/products';
 
 export const router = Router();
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(_request, _file, callback) {
+      callback(null, path.resolve(__dirname, '..', 'uploads'));
+    },
+
+    filename(_request, file, callback) {
+      callback(null, `${Date.now()}-${file.originalname}`);
+    }
+  })
+});
 
 // List categories
 router.get('/categories', listCategories);
@@ -17,7 +32,7 @@ router.delete('/categories/:categoryId', deleteCategory);
 router.get('/products', listProducts);
 
 // Create product
-router.post('/products', createProduct);
+router.post('/products', upload.single('image'), createProduct);
 
 // Delete product
 router.delete('/products/:productId', deleteProduct);
