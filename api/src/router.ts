@@ -4,6 +4,7 @@ import multer from 'multer';
 
 import { createCategory, deleteCategory, listCategories } from './app/use-cases/categories';
 import { createProduct, deleteProduct, listProducts } from './app/use-cases/products';
+import { listProductsByCategory } from './app/use-cases/categories/list-products-by-category';
 
 export const router = Router();
 
@@ -38,9 +39,7 @@ router.post('/products', upload.single('image'), createProduct);
 router.delete('/products/:productId', deleteProduct);
 
 // Get products by category
-router.get('/categories/:categoryId/products', (request, response) => {
-  response.send('Get products by category');
-});
+router.get('/categories/:categoryId/products', listProductsByCategory);
 
 // List orders
 router.get('/orders', (request, response) => {
