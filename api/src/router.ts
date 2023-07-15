@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { listCategories } from './app/use-cases/categories/list-categories';
+import { createCategory, deleteCategory, listCategories } from './app/use-cases/categories';
 
 export const router = Router();
 
@@ -7,9 +7,10 @@ export const router = Router();
 router.get('/categories', listCategories);
 
 // Create category
-router.post('/categories', (request, response) => {
-  response.send('Create category');
-});
+router.post('/categories', createCategory);
+
+// Delete category
+router.delete('/categories/:categoryId', deleteCategory);
 
 // List products
 router.get('/products', (request, response) => {
