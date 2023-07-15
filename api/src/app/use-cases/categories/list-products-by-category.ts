@@ -6,7 +6,11 @@ export async function listProductsByCategory(request: Request, response: Respons
   const { categoryId } = request.params;
 
   try {
-    const products = await Product.find({ category: { _id: categoryId }});
+    const products = await Product.find({
+      category: {
+        _id: categoryId
+      }
+    });
 
     response.json(products);
   } catch {

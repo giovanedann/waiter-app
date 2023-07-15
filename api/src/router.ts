@@ -5,6 +5,7 @@ import multer from 'multer';
 import { createCategory, deleteCategory, listCategories } from './app/use-cases/categories';
 import { createProduct, deleteProduct, listProducts } from './app/use-cases/products';
 import { listProductsByCategory } from './app/use-cases/categories/list-products-by-category';
+import { changeOrderStatus, createOrder, deleteOrder, listOrders } from './app/use-cases/orders';
 
 export const router = Router();
 
@@ -42,21 +43,13 @@ router.delete('/products/:productId', deleteProduct);
 router.get('/categories/:categoryId/products', listProductsByCategory);
 
 // List orders
-router.get('/orders', (request, response) => {
-  response.send('List orders');
-});
+router.get('/orders', listOrders);
 
 // Create order
-router.post('/orders', (request, response) => {
-  response.send('Create order');
-});
+router.post('/orders', createOrder);
 
 // Change order status
-router.patch('/orders/:orderId', (request, response) => {
-  response.send('Change order status');
-});
+router.patch('/orders/:orderId', changeOrderStatus);
 
 // Delete/cancel order
-router.delete('/orders/:orderId', (request, response) => {
-  response.send('Delete/cancel order');
-});
+router.delete('/orders/:orderId', deleteOrder);

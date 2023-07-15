@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import { Product } from '../../models/Product';
 
 export async function createProduct(request: Request, response: Response) {
-  const imagePath = request.file?.filename;
-
   try {
+    const imagePath = request.file?.filename;
+
     const {
       category,
       description,
