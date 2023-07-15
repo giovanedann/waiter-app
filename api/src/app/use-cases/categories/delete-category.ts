@@ -3,9 +3,13 @@ import { Request, Response } from 'express';
 import { Category } from '../../models/Category';
 
 export async function deleteCategory(request: Request, response: Response) {
-  const { categoryId } = request.params;
+  try {
+    const { categoryId } = request.params;
 
-  await Category.deleteOne({ _id: categoryId });
+    await Category.deleteOne({ _id: categoryId });
 
-  response.sendStatus(204);
+    response.sendStatus(204);
+  } catch {
+    response.status(500).json({ error: 'Internal server error' });
+  }
 }
