@@ -1,28 +1,13 @@
+import { ordersMock } from '../../mocks/orders';
+import { OrderBoard } from '../OrderBoard';
 import * as S from './styles';
 
 export function Orders() {
   return (
     <S.Container>
-      {new Array(3).fill(null).map(() => (
-        <S.Board key={Math.random()}>
-          <header>
-            <span>🕒</span>
-            <strong>Waiting</strong>
-            <span>(1)</span>
-          </header>
-
-          <S.OrdersContainer>
-            <button type="button">
-              <strong>Mesa 2</strong>
-              <span>2 itens</span>
-            </button>
-            <button type="button">
-              <strong>Mesa 2</strong>
-              <span>2 itens</span>
-            </button>
-          </S.OrdersContainer>
-        </S.Board>
-      ))}
+      <OrderBoard key={Math.random()} icon='🕝' title="Waiting" orders={ordersMock} />
+      <OrderBoard key={Math.random()} icon='👨🏻‍🍳' title="Preparing" orders={ordersMock} />
+      <OrderBoard key={Math.random()} icon='✅' title="Delivered" orders={ordersMock} />
     </S.Container>
   );
 }
