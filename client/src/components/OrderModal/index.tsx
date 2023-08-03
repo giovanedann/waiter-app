@@ -1,42 +1,45 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import CloseIcon from '../../assets/images/close-icon.svg';
 import { Order } from '../../types/Order';
 import { formatCurrency } from '../../utils/formatCurrency';
 
 import * as S from './styles';
+import { orderStatusIcon, orderStatusText } from './data';
 
 type OrderModalProps = {
   visible: boolean;
   order: Order | null;
   onCloseIconClick: () => void;
-  onOverlayClick?: () => void;
 }
 
-const orderStatusIcon = {
-  DONE: '✅',
-  WAITING: '🕑',
-  IN_PRODUCTION: '👨🏼‍🍳'
-};
+export function OrderModal({ visible, order, onCloseIconClick }: OrderModalProps) {
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        onCloseIconClick();
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
 
-const orderStatusText = {
-  DONE: 'Done',
-  WAITING: 'Waiting',
-  IN_PRODUCTION: 'In production'
-};
-
-export function OrderModal({ visible, order, onCloseIconClick, onOverlayClick }: OrderModalProps) {
-  if (!visible || !order) {
-    return null;
-  }
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onCloseIconClick]);
 
   const totalPrice = useMemo(() => {
+    if (!order) return 0;
+
     return order.products.reduce((acc, curr) => (
       acc + (curr.product.price * curr.quantity)
     ), 0);
   }, [order]);
 
+  if (!visible || !order) {
+    return null;
+  }
+
   return (
-    <S.Overlay onClick={onOverlayClick}>
+    <S.Overlay>
       <S.ModalBody>
         <header>
           <strong>Table {order.table}</strong>

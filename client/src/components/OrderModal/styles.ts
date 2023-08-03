@@ -11,6 +11,7 @@ export const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 `;
 
 export const ModalBody = styled.div`
@@ -18,6 +19,7 @@ export const ModalBody = styled.div`
   width: 30rem;
   border-radius: 0.5rem;
   padding: 2rem;
+  z-index: 2;
 
   header {
     display: flex;

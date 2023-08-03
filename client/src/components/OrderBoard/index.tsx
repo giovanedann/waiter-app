@@ -35,7 +35,6 @@ export function OrderBoard({ icon, title, orders }: OrderBoardProps) {
         visible={isModalVisible}
         order={selectedOrder}
         onCloseIconClick={handleCloseModal}
-        onOverlayClick={handleCloseModal}
       />
 
       {orders.length > 0 && (
