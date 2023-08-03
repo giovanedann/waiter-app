@@ -18,6 +18,11 @@ export function OrderBoard({ icon, title, orders }: OrderBoardProps) {
     setSelectedOrder(order);
   }
 
+  function handleCloseModal() {
+    setIsModalVisible(false);
+    setSelectedOrder(null);
+  }
+
   return (
     <S.Container>
       <header>
@@ -26,7 +31,12 @@ export function OrderBoard({ icon, title, orders }: OrderBoardProps) {
         <span>({orders.length})</span>
       </header>
 
-      <OrderModal visible={isModalVisible} order={selectedOrder} />
+      <OrderModal
+        visible={isModalVisible}
+        order={selectedOrder}
+        onCloseIconClick={handleCloseModal}
+        onOverlayClick={handleCloseModal}
+      />
 
       {orders.length > 0 && (
         <S.Content>

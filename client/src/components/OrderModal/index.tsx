@@ -8,6 +8,8 @@ import * as S from './styles';
 type OrderModalProps = {
   visible: boolean;
   order: Order | null;
+  onCloseIconClick: () => void;
+  onOverlayClick?: () => void;
 }
 
 const orderStatusIcon = {
@@ -22,7 +24,7 @@ const orderStatusText = {
   IN_PRODUCTION: 'In production'
 };
 
-export function OrderModal({ visible, order }: OrderModalProps) {
+export function OrderModal({ visible, order, onCloseIconClick, onOverlayClick }: OrderModalProps) {
   if (!visible || !order) {
     return null;
   }
@@ -34,13 +36,13 @@ export function OrderModal({ visible, order }: OrderModalProps) {
   }, [order]);
 
   return (
-    <S.Overlay>
+    <S.Overlay onClick={onOverlayClick}>
       <S.ModalBody>
         <header>
           <strong>Table {order.table}</strong>
 
           <button type="button">
-            <img src={CloseIcon} alt="Close modal icon" />
+            <img src={CloseIcon} alt="Close modal icon" onClick={onCloseIconClick} />
           </button>
         </header>
 
