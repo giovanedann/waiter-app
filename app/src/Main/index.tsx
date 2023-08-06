@@ -1,4 +1,4 @@
-import { Header, Menu } from '../components';
+import { Header, Menu, TableModal } from '../components';
 import { Button } from '../components/Button';
 import { Categories } from '../components/Categories';
 import * as S from './styles';
@@ -24,6 +24,8 @@ export function Main() {
           </Button>
         </S.FooterContainer>
       </S.Footer>
+
+      <TableModal />
     </>
   );
 }
