@@ -6,6 +6,7 @@ import * as S from './styles';
 
 export function Main() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedTable, setSelectedTable] = useState('');
 
   function handleCloseModal() {
     setIsModalVisible(false);
@@ -13,6 +14,11 @@ export function Main() {
 
   function handleOpenModal() {
     setIsModalVisible(true);
+  }
+
+  function handleSave(table: string) {
+    setSelectedTable(table);
+    handleCloseModal();
   }
 
   return (
@@ -36,7 +42,11 @@ export function Main() {
         </S.FooterContainer>
       </S.Footer>
 
-      <TableModal onClose={handleCloseModal} visible={isModalVisible} />
+      <TableModal
+        onClose={handleCloseModal}
+        visible={isModalVisible}
+        onSave={handleSave}
+      />
     </>
   );
 }

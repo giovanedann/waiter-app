@@ -9,9 +9,10 @@ import { useState } from 'react';
 type TableModalProps = {
   visible: boolean
   onClose: () => void
+  onSave: (tableNumber: string) => void;
 }
 
-export function TableModal({ visible, onClose }: TableModalProps) {
+export function TableModal({ visible, onClose, onSave }: TableModalProps) {
   const [table, setTable] = useState('');
 
   function handleClose() {
@@ -39,7 +40,7 @@ export function TableModal({ visible, onClose }: TableModalProps) {
               onChangeText={setTable}
             />
 
-            <Button onPress={() => alert(table)} disabled={table.length === 0}>
+            <Button onPress={() => onSave(table)} disabled={table.length === 0}>
               Finish
             </Button>
           </S.Form>
