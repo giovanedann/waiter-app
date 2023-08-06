@@ -4,6 +4,7 @@ import * as S from './styles';
 import { Text } from '../Text';
 import { Close } from '../Icons';
 import { Button } from '../Button';
+import { useState } from 'react';
 
 type TableModalProps = {
   visible: boolean
@@ -11,6 +12,13 @@ type TableModalProps = {
 }
 
 export function TableModal({ visible, onClose }: TableModalProps) {
+  const [table, setTable] = useState('');
+
+  function handleClose() {
+    onClose();
+    setTable('');
+  }
+
   return (
     <Modal transparent visible={visible} animationType='fade'>
       <S.Overlay behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
@@ -18,7 +26,7 @@ export function TableModal({ visible, onClose }: TableModalProps) {
           <S.Header>
             <Text weight="600">Enter the table</Text>
 
-            <Pressable onPress={onClose}>
+            <Pressable onPress={handleClose}>
               <Close color="#666" />
             </Pressable>
           </S.Header>
@@ -28,9 +36,10 @@ export function TableModal({ visible, onClose }: TableModalProps) {
               placeholder="Table number"
               placeholderTextColor="#666"
               keyboardType='number-pad'
+              onChangeText={setTable}
             />
 
-            <Button onPress={() => alert('Order finished')}>
+            <Button onPress={() => alert(table)} disabled={table.length === 0}>
               Finish
             </Button>
           </S.Form>
