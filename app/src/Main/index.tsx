@@ -1,10 +1,10 @@
-import { Text } from '../components/Text';
+import { Header } from '../components/Header';
 import * as S from './styles';
 
 export function Main() {
   return (
     <S.Container>
-      <Text>Hello world</Text>
+      <Header />
     </S.Container>
   );
 }
