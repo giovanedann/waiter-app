@@ -5,14 +5,20 @@ import { Text } from '../Text';
 import { Close } from '../Icons';
 import { Button } from '../Button';
 
-export function TableModal() {
+type TableModalProps = {
+  visible: boolean
+  onClose: () => void
+}
+
+export function TableModal({ visible, onClose }: TableModalProps) {
   return (
-    <Modal transparent>
+    <Modal transparent visible={visible} animationType='fade'>
       <S.Overlay behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
         <S.ModalBody>
           <S.Header>
             <Text weight="600">Enter the table</Text>
-            <Pressable>
+
+            <Pressable onPress={onClose}>
               <Close color="#666" />
             </Pressable>
           </S.Header>
@@ -24,7 +30,7 @@ export function TableModal() {
               keyboardType='number-pad'
             />
 
-            <Button onPress={() => alert('Finished order')}>
+            <Button onPress={() => alert('Order finished')}>
               Finish
             </Button>
           </S.Form>
