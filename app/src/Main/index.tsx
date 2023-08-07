@@ -21,10 +21,15 @@ export function Main() {
     handleCloseModal();
   }
 
+  function handleCancelOrder() {
+    setSelectedTable('');
+  }
+
   return (
     <>
       <S.Container>
-        <Header />
+        <Header selectedTable={selectedTable} onCancelOrder={handleCancelOrder} />
+
         <S.CategoriesContainer>
           <Categories />
         </S.CategoriesContainer>
@@ -34,13 +39,15 @@ export function Main() {
         </S.MenuContainer>
       </S.Container>
 
-      <S.Footer>
-        <S.FooterContainer>
-          <Button onPress={handleOpenModal}>
-            New order
-          </Button>
-        </S.FooterContainer>
-      </S.Footer>
+      {selectedTable.length === 0 && (
+        <S.Footer>
+          <S.FooterContainer>
+            <Button onPress={handleOpenModal}>
+              New order
+            </Button>
+          </S.FooterContainer>
+        </S.Footer>
+      )}
 
       <TableModal
         onClose={handleCloseModal}
