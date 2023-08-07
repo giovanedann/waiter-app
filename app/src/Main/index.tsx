@@ -3,10 +3,14 @@ import { Header, Menu, TableModal } from '../components';
 import { Button } from '../components/Button';
 import { Categories } from '../components/Categories';
 import * as S from './styles';
+import { Cart } from '../components/Cart';
+import { CartItem } from '../types/CartItem';
+import { products } from '../mocks/products';
 
 export function Main() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
+  const [cartItems] = useState<CartItem[]>([{ product: products[0], quantity: 1 }, { product: products[1], quantity: 2 }]);
 
   function handleCloseModal() {
     setIsModalVisible(false);
@@ -39,15 +43,19 @@ export function Main() {
         </S.MenuContainer>
       </S.Container>
 
-      {selectedTable.length === 0 && (
-        <S.Footer>
-          <S.FooterContainer>
+      <S.Footer>
+        <S.FooterContainer>
+          {!selectedTable && (
             <Button onPress={handleOpenModal}>
               New order
             </Button>
-          </S.FooterContainer>
-        </S.Footer>
-      )}
+          )}
+
+          {selectedTable && (
+            <Cart items={cartItems} />
+          )}
+        </S.FooterContainer>
+      </S.Footer>
 
       <TableModal
         onClose={handleCloseModal}
