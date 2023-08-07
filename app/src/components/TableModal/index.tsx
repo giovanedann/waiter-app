@@ -20,6 +20,11 @@ export function TableModal({ visible, onClose, onSave }: TableModalProps) {
     setTable('');
   }
 
+  function handleSave() {
+    onSave(table);
+    handleClose();
+  }
+
   return (
     <Modal transparent visible={visible} animationType='fade'>
       <S.Overlay behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
@@ -40,7 +45,7 @@ export function TableModal({ visible, onClose, onSave }: TableModalProps) {
               onChangeText={setTable}
             />
 
-            <Button onPress={() => onSave(table)} disabled={table.length === 0}>
+            <Button onPress={() => handleSave()} disabled={table.length === 0}>
               Finish
             </Button>
           </S.Form>
