@@ -10,7 +10,7 @@ import { Product } from '../types/Product';
 export function Main() {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
-  const [cartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   function handleCloseModal() {
     setIsTableModalVisible(false);
@@ -27,6 +27,7 @@ export function Main() {
 
   function handleCancelOrder() {
     setSelectedTable('');
+    setCartItems([]);
   }
 
   function handleAddToCart(product: Product) {
@@ -34,7 +35,45 @@ export function Main() {
       setIsTableModalVisible(true);
     }
 
-    alert(product.name);
+    setCartItems((prev) => {
+      const itemIndex = prev.findIndex((item) => item.product._id === product._id);
+
+      if (itemIndex < 0) {
+        return prev.concat({ quantity: 1, product });
+      }
+
+      const newCartItems = [...prev];
+      const item = newCartItems[itemIndex];
+
+      newCartItems[itemIndex] = {
+        ...item,
+        quantity: item.quantity + 1,
+      };
+
+      return newCartItems;
+    });
+  }
+
+  function handleDecrementCartItem(product: Product) {
+    setCartItems((prev) => {
+      const itemIndex = prev.findIndex((item) => item.product._id === product._id);
+
+      const item = prev[itemIndex];
+      const newCartItems = [...prev];
+
+      if (item.quantity === 1) {
+        newCartItems.splice(itemIndex, 1);
+
+        return newCartItems;
+      }
+
+      newCartItems[itemIndex] = {
+        ...item,
+        quantity: item.quantity - 1,
+      };
+
+      return newCartItems;
+    });
   }
 
   return (
@@ -60,7 +99,7 @@ export function Main() {
           )}
 
           {selectedTable && (
-            <Cart items={cartItems} />
+            <Cart onAdd={handleAddToCart} onRemove={handleDecrementCartItem} items={cartItems} />
           )}
         </S.FooterContainer>
       </S.Footer>
