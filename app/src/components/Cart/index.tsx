@@ -9,15 +9,17 @@ import { Button } from '../Button';
 import { Product } from '../../types/Product';
 import { ConfirmedOrderModal } from '../ConfirmedOrderModal';
 import { useState } from 'react';
+import OrderService from '../../services/OrderService';
 
 type CartProps = {
   items: CartItem[]
   onAdd: (product: Product) => void
   onRemove: (product: Product) => void
   onConfirmOrder: () => void
+  selectedTable: string;
 }
 
-export function Cart({ items, onAdd, onRemove, onConfirmOrder }: CartProps) {
+export function Cart({ items, onAdd, onRemove, onConfirmOrder, selectedTable }: CartProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmOrderModalVisible, setIsConfirmOrderModalVisible] = useState(false);
 
@@ -25,8 +27,17 @@ export function Cart({ items, onAdd, onRemove, onConfirmOrder }: CartProps) {
     .reduce((acc, curr) => (acc + curr.product.price * curr.quantity), 0);
 
   function handleConfirmOrder() {
-    setIsConfirmOrderModalVisible(true);
+    const confirmOrderProducts = items.map((cartItem) => ({
+      product: cartItem.product._id,
+      quantity: cartItem.quantity
+    }));
+
     setIsLoading(true);
+
+    OrderService.confirmOrder({ table: selectedTable, products: confirmOrderProducts });
+
+    setIsConfirmOrderModalVisible(true);
+    setIsLoading(false);
   }
 
   function handleOk() {

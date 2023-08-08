@@ -177,6 +177,7 @@ export function Main() {
               onAdd={handleAddToCart}
               onRemove={handleDecrementCartItem}
               items={cartItems}
+              selectedTable={selectedTable}
             />
           )}
         </S.FooterContainer>
