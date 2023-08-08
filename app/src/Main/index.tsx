@@ -8,16 +8,16 @@ import { CartItem } from '../types/CartItem';
 import { Product } from '../types/Product';
 
 export function Main() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
   const [cartItems] = useState<CartItem[]>([]);
 
   function handleCloseModal() {
-    setIsModalVisible(false);
+    setIsTableModalVisible(false);
   }
 
   function handleOpenModal() {
-    setIsModalVisible(true);
+    setIsTableModalVisible(true);
   }
 
   function handleSave(table: string) {
@@ -30,6 +30,10 @@ export function Main() {
   }
 
   function handleAddToCart(product: Product) {
+    if (!selectedTable) {
+      setIsTableModalVisible(true);
+    }
+
     alert(product.name);
   }
 
@@ -63,7 +67,7 @@ export function Main() {
 
       <TableModal
         onClose={handleCloseModal}
-        visible={isModalVisible}
+        visible={isTableModalVisible}
         onSave={handleSave}
       />
     </>
