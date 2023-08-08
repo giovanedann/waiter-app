@@ -40,6 +40,17 @@ export function Main() {
     loadData();
   }, []);
 
+  async function handleSelectCategory(categoryId: string) {
+    if (categoryId) {
+      const productsByCategory = await CategoriesService.findProductsByCategoryId(categoryId);
+      setProducts(productsByCategory);
+      return;
+    }
+
+    const allProducts = await ProductsService.findAll();
+    setProducts(allProducts);
+  }
+
   function handleCloseModal() {
     setIsTableModalVisible(false);
   }
@@ -118,7 +129,7 @@ export function Main() {
         {!isLoading && (
           <>
             <S.CategoriesContainer>
-              <Categories categories={categories} />
+              <Categories categories={categories} onCategoryPress={handleSelectCategory} />
             </S.CategoriesContainer>
 
             {products.length > 0 ? (
