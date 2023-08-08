@@ -18,6 +18,7 @@ export function Main() {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<Product[]>(productsMock);
   const [categories, setCategories] = useState<Category[]>(categoriesMock);
@@ -41,14 +42,21 @@ export function Main() {
   }, []);
 
   async function handleSelectCategory(categoryId: string) {
+    setIsLoadingProducts(true);
+
     if (categoryId) {
       const productsByCategory = await CategoriesService.findProductsByCategoryId(categoryId);
+
       setProducts(productsByCategory);
+      setIsLoadingProducts(false);
+
       return;
     }
 
     const allProducts = await ProductsService.findAll();
+
     setProducts(allProducts);
+    setIsLoadingProducts(false);
   }
 
   function handleCloseModal() {
@@ -132,16 +140,25 @@ export function Main() {
               <Categories categories={categories} onCategoryPress={handleSelectCategory} />
             </S.CategoriesContainer>
 
-            {products.length > 0 ? (
-              <S.MenuContainer>
-                <Menu products={products} onAddToCart={handleAddToCart} />
-              </S.MenuContainer>
-            ) : (
+            {isLoadingProducts ? (
               <S.CenteredContainer>
-                <Empty />
-                <Text color="#666" style={{ marginTop: 24 }}>No products found</Text>
+                <ActivityIndicator size="large" color="#d73035" />
               </S.CenteredContainer>
+            ) : (
+              <>
+                {products.length > 0 ? (
+                  <S.MenuContainer>
+                    <Menu products={products} onAddToCart={handleAddToCart} />
+                  </S.MenuContainer>
+                ) : (
+                  <S.CenteredContainer>
+                    <Empty />
+                    <Text color="#666" style={{ marginTop: 24 }}>No products found</Text>
+                  </S.CenteredContainer>
+                )}
+              </>
             )}
+
           </>
         )}
       </S.Container>
