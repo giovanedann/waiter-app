@@ -18,6 +18,7 @@ type CartProps = {
 }
 
 export function Cart({ items, onAdd, onRemove, onConfirmOrder }: CartProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const [isConfirmOrderModalVisible, setIsConfirmOrderModalVisible] = useState(false);
 
   const totalPrice = items
@@ -25,6 +26,7 @@ export function Cart({ items, onAdd, onRemove, onConfirmOrder }: CartProps) {
 
   function handleConfirmOrder() {
     setIsConfirmOrderModalVisible(true);
+    setIsLoading(true);
   }
 
   function handleOk() {
@@ -86,7 +88,11 @@ export function Cart({ items, onAdd, onRemove, onConfirmOrder }: CartProps) {
           )}
         </S.TotalPriceContainer>
 
-        <Button onPress={handleConfirmOrder} disabled={items.length === 0}>
+        <Button
+          onPress={handleConfirmOrder}
+          disabled={items.length === 0}
+          loading={isLoading}
+        >
           Confirm order
         </Button>
       </S.Summary>
