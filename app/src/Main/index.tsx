@@ -25,11 +25,6 @@ export function Main() {
     handleCloseModal();
   }
 
-  function handleCancelOrder() {
-    setSelectedTable('');
-    setCartItems([]);
-  }
-
   function handleAddToCart(product: Product) {
     if (!selectedTable) {
       setIsTableModalVisible(true);
@@ -76,10 +71,15 @@ export function Main() {
     });
   }
 
+  function handleResetOrder() {
+    setCartItems([]);
+    setSelectedTable('');
+  }
+
   return (
     <>
       <S.Container>
-        <Header selectedTable={selectedTable} onCancelOrder={handleCancelOrder} />
+        <Header selectedTable={selectedTable} onCancelOrder={handleResetOrder} />
 
         <S.CategoriesContainer>
           <Categories />
@@ -99,7 +99,12 @@ export function Main() {
           )}
 
           {selectedTable && (
-            <Cart onAdd={handleAddToCart} onRemove={handleDecrementCartItem} items={cartItems} />
+            <Cart
+              onConfirmOrder={handleResetOrder}
+              onAdd={handleAddToCart}
+              onRemove={handleDecrementCartItem}
+              items={cartItems}
+            />
           )}
         </S.FooterContainer>
       </S.Footer>

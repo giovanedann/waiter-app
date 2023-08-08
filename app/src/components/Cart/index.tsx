@@ -7,16 +7,30 @@ import { formatCurrency } from '../../utils/formatCurrency';
 import { MinusCircle, PlusCircle } from '../Icons';
 import { Button } from '../Button';
 import { Product } from '../../types/Product';
+import { ConfirmedOrderModal } from '../ConfirmedOrderModal';
+import { useState } from 'react';
 
 type CartProps = {
   items: CartItem[]
   onAdd: (product: Product) => void
   onRemove: (product: Product) => void
+  onConfirmOrder: () => void
 }
 
-export function Cart({ items, onAdd, onRemove }: CartProps) {
+export function Cart({ items, onAdd, onRemove, onConfirmOrder }: CartProps) {
+  const [isConfirmOrderModalVisible, setIsConfirmOrderModalVisible] = useState(false);
+
   const totalPrice = items
     .reduce((acc, curr) => (acc + curr.product.price * curr.quantity), 0);
+
+  function handleConfirmOrder() {
+    setIsConfirmOrderModalVisible(true);
+  }
+
+  function handleOk() {
+    onConfirmOrder();
+    setIsConfirmOrderModalVisible(false);
+  }
 
   return (
     <>
@@ -72,10 +86,15 @@ export function Cart({ items, onAdd, onRemove }: CartProps) {
           )}
         </S.TotalPriceContainer>
 
-        <Button onPress={() => alert('Order confirmed')} disabled={items.length === 0}>
+        <Button onPress={handleConfirmOrder} disabled={items.length === 0}>
           Confirm order
         </Button>
       </S.Summary>
+
+      <ConfirmedOrderModal
+        visible={isConfirmOrderModalVisible}
+        onOkClick={handleOk}
+      />
     </>
   );
 }
