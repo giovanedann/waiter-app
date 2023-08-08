@@ -11,10 +11,16 @@ type ProductModalProps = {
   visible: boolean
   onClose: () => void
   product: Product | null
+  onAddToCart: (product: Product) => void
 }
 
-export function ProductModal({ visible, onClose, product }: ProductModalProps) {
+export function ProductModal({ visible, onClose, product, onAddToCart }: ProductModalProps) {
   if (!product) return null;
+
+  function handleAddToCart(product: Product) {
+    onAddToCart(product);
+    onClose();
+  }
 
   return (
     <Modal
@@ -66,7 +72,7 @@ export function ProductModal({ visible, onClose, product }: ProductModalProps) {
             <Text size={20} weight="600">{formatCurrency(product.price)}</Text>
           </S.PriceContainer>
 
-          <Button onPress={() => alert(`Added ${product.name} to order`)}>
+          <Button onPress={() => handleAddToCart(product)}>
             Add to order
           </Button>
         </S.FooterContainer>

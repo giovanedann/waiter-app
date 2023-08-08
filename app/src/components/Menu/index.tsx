@@ -10,7 +10,11 @@ import { PlusCircle } from '../Icons';
 import { ProductModal } from '../ProductModal';
 import { Product } from '../../types/Product';
 
-export function Menu() {
+type MenuProps = {
+  onAddToCart: (product: Product) => void
+}
+
+export function Menu({ onAddToCart }: MenuProps) {
   const [isProductModalVisible, setIsProductModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
@@ -29,6 +33,7 @@ export function Menu() {
         product={selectedProduct}
         visible={isProductModalVisible}
         onClose={handleCloseProductModal}
+        onAddToCart={onAddToCart}
       />
 
       <FlatList
@@ -54,7 +59,7 @@ export function Menu() {
               <Text size={14} weight="600">{formatCurrency(item.price)}</Text>
             </S.ProductDetails>
 
-            <S.AddToCartButton>
+            <S.AddToCartButton onPress={() => onAddToCart(item)}>
               <PlusCircle />
             </S.AddToCartButton>
           </S.Product>

@@ -46,7 +46,7 @@ export function TableModal({ visible, onClose, onSave }: TableModalProps) {
             />
 
             <Button onPress={() => handleSave()} disabled={table.length === 0}>
-              Finish
+              Save
             </Button>
           </S.Form>
         </S.ModalBody>

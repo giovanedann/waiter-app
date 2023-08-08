@@ -5,12 +5,12 @@ import { Categories } from '../components/Categories';
 import * as S from './styles';
 import { Cart } from '../components/Cart';
 import { CartItem } from '../types/CartItem';
-import { products } from '../mocks/products';
+import { Product } from '../types/Product';
 
 export function Main() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
-  const [cartItems] = useState<CartItem[]>([{ product: products[0], quantity: 1 }, { product: products[1], quantity: 2 }]);
+  const [cartItems] = useState<CartItem[]>([]);
 
   function handleCloseModal() {
     setIsModalVisible(false);
@@ -29,6 +29,10 @@ export function Main() {
     setSelectedTable('');
   }
 
+  function handleAddToCart(product: Product) {
+    alert(product.name);
+  }
+
   return (
     <>
       <S.Container>
@@ -39,7 +43,7 @@ export function Main() {
         </S.CategoriesContainer>
 
         <S.MenuContainer>
-          <Menu />
+          <Menu onAddToCart={handleAddToCart} />
         </S.MenuContainer>
       </S.Container>
 
