@@ -28,3 +28,14 @@ export const ProductImage = styled.Image`
 export const Actions = styled.View`
   flex-direction: row;
 `;
+
+export const Summary = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const TotalPriceContainer = styled.View`
+  margin-right: 32px;
+  flex: 1;
+`;
