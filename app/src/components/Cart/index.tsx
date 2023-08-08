@@ -6,17 +6,23 @@ import { Text } from '../Text';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { MinusCircle, PlusCircle } from '../Icons';
 import { Button } from '../Button';
+import { Product } from '../../types/Product';
 
 type CartProps = {
   items: CartItem[]
+  onAdd: (product: Product) => void
+  onRemove: (product: Product) => void
 }
 
-export function Cart({ items }: CartProps) {
+export function Cart({ items, onAdd, onRemove }: CartProps) {
+  const totalPrice = items
+    .reduce((acc, curr) => (acc + curr.product.price * curr.quantity), 0);
+
   return (
     <>
       {items.length > 0 && (
         <FlatList
-          style={{ marginBottom: 20, maxHeight: 140 }}
+          style={{ marginBottom: 20, maxHeight: 150 }}
           data={items}
           keyExtractor={({ product }) => product._id}
           showsVerticalScrollIndicator={false}
@@ -42,10 +48,10 @@ export function Cart({ items }: CartProps) {
               </S.ProductInfo>
 
               <S.Actions>
-                <Pressable style={{ marginRight: 24 }}>
+                <Pressable style={{ marginRight: 24 }} onPress={() => onAdd(item.product)}>
                   <PlusCircle />
                 </Pressable>
-                <Pressable>
+                <Pressable onPress={() => onRemove(item.product)}>
                   <MinusCircle />
                 </Pressable>
               </S.Actions>
@@ -59,7 +65,7 @@ export function Cart({ items }: CartProps) {
           {items.length > 0 ? (
             <>
               <Text color="#666">Total</Text>
-              <Text size={20} weight="600">{formatCurrency(120)}</Text>
+              <Text size={20} weight="600">{formatCurrency(totalPrice)}</Text>
             </>
           ) : (
             <Text color="#999">Cart is empty</Text>
