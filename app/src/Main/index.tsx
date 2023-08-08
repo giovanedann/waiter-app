@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Header, Menu, TableModal, Text } from '../components';
 import { Button } from '../components/Button';
 import { Categories } from '../components/Categories';
@@ -8,7 +8,11 @@ import { CartItem } from '../types/CartItem';
 import { Product } from '../types/Product';
 import { ActivityIndicator } from 'react-native';
 import { products as productsMock } from '../mocks/products';
+import { categories as categoriesMock } from '../mocks/categories';
 import { Empty } from '../components/Icons';
+import { Category } from '../types/Category';
+import CategoriesService from '../services/CategoriesService';
+import ProductsService from '../services/ProductsService';
 
 export function Main() {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
@@ -16,6 +20,25 @@ export function Main() {
   const [isLoading, setIsLoading] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<Product[]>(productsMock);
+  const [categories, setCategories] = useState<Category[]>(categoriesMock);
+
+  async function loadData() {
+    setIsLoading(true);
+
+    const [
+      products,
+      categories
+    ] = await Promise.all([ProductsService.findAll(), CategoriesService.findAll()]);
+
+    setCategories(categories);
+    setProducts(products);
+
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   function handleCloseModal() {
     setIsTableModalVisible(false);
@@ -95,7 +118,7 @@ export function Main() {
         {!isLoading && (
           <>
             <S.CategoriesContainer>
-              <Categories />
+              <Categories categories={categories} />
             </S.CategoriesContainer>
 
             {products.length > 0 ? (

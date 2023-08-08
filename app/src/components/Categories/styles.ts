@@ -4,6 +4,7 @@ import { Animated, Platform } from 'react-native';
 const isAndroid = Platform.OS === 'android';
 
 export const Category = styled.Pressable`
+  min-width: 80px;
   align-items: center;
   margin-left: 24px;
 `;
