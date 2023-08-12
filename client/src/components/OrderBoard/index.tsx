@@ -2,15 +2,18 @@ import { useState } from 'react';
 import { Order } from '../../types/Order';
 import { OrderModal } from '../OrderModal';
 import * as S from './styles';
+import OrderService from '../../services/OrderService';
 
 type OrderBoardProps = {
   icon: string;
   title: string;
+  onCancelOrder: (orderId: string) => void
   orders: Order[];
 }
 
-export function OrderBoard({ icon, title, orders }: OrderBoardProps) {
+export function OrderBoard({ icon, title, orders, onCancelOrder }: OrderBoardProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   function handleOpenModal(order: Order) {
@@ -21,6 +24,19 @@ export function OrderBoard({ icon, title, orders }: OrderBoardProps) {
   function handleCloseModal() {
     setIsModalVisible(false);
     setSelectedOrder(null);
+  }
+
+  async function handleCancelOrder() {
+    if (!selectedOrder) return;
+
+    setIsLoading(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await OrderService.cancelOrder(selectedOrder._id);
+
+    onCancelOrder(selectedOrder._id);
+    setIsLoading(false);
+    setIsModalVisible(false);
   }
 
   return (
@@ -35,13 +51,15 @@ export function OrderBoard({ icon, title, orders }: OrderBoardProps) {
         visible={isModalVisible}
         order={selectedOrder}
         onCloseIconClick={handleCloseModal}
+        onCancelOrder={handleCancelOrder}
+        isLoading={isLoading}
       />
 
       {orders.length > 0 && (
         <S.Content>
           {orders.map((order) => (
             <button type="button" key={order._id} onClick={() => handleOpenModal(order)}>
-              <strong>{order.table}</strong>
+              <strong>Table {order.table}</strong>
               <span>{order.products.length} items</span>
             </button>
           ))}
