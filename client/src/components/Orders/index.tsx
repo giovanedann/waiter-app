@@ -1,11 +1,30 @@
 import { useEffect, useState } from 'react';
+import socketIo from 'socket.io-client';
+
 import { OrderBoard } from '../OrderBoard';
 import * as S from './styles';
 import { Order } from '../../types/Order';
 import OrderService from '../../services/OrderService';
+import { toast } from 'react-toastify';
 
 export function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    const socket = socketIo(import.meta.env.VITE_API_URL, {
+      transports: ['websocket'],
+    });
+
+    socket.on('orders@new', (order: Order) => {
+      toast.info(`New order for table ${order.table} added`);
+
+      setOrders((prevState) => prevState.concat(order));
+    });
+
+    return () => {
+      socket.off('orders@new');
+    };
+  }, []);
 
   useEffect(() => {
     OrderService.getOrders().then((data) => {
