@@ -9,6 +9,10 @@ class OrderService {
   async cancelOrder(orderId: string): Promise<void> {
     return customAxios.delete(`/orders/${orderId}`);
   }
+
+  async changeOrderStatus(orderId: string, status: 'IN_PRODUCTION' | 'DONE'): Promise<void> {
+    return customAxios.patch(`/orders/${orderId}`, { status });
+  }
 }
 
 export default new OrderService();
