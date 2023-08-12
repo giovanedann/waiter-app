@@ -3,6 +3,7 @@ import { Order } from '../../types/Order';
 import { OrderModal } from '../OrderModal';
 import * as S from './styles';
 import OrderService from '../../services/OrderService';
+import { toast } from 'react-toastify';
 
 type OrderBoardProps = {
   icon: string;
@@ -33,6 +34,8 @@ export function OrderBoard({ icon, title, orders, onCancelOrder }: OrderBoardPro
 
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await OrderService.cancelOrder(selectedOrder._id);
+
+    toast.success(`Order from table ${selectedOrder.table} cancelled with success.`);
 
     onCancelOrder(selectedOrder._id);
     setIsLoading(false);
