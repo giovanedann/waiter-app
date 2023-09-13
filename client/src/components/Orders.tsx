@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import socketIo from 'socket.io-client';
-
-import { OrderBoard } from '../OrderBoard';
-import * as S from './styles';
-import { Order } from '../../types/Order';
-import OrderService from '../../services/OrderService';
 import { toast } from 'react-toastify';
+
+import { OrderBoard } from './OrderBoard';
+import { Order } from '../types/Order';
+import OrderService from '../services/OrderService';
 
 export function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -47,7 +46,7 @@ export function Orders() {
   }
 
   return (
-    <S.Container>
+    <div className="flex w-full max-w-[76rem] my-10 mx-auto gap-8">
       <OrderBoard
         icon='🕝'
         title="Waiting"
@@ -71,6 +70,6 @@ export function Orders() {
         onCancelOrder={handleCancelOrder}
         onOrderStatusChange={handleOrderStatusChange}
       />
-    </S.Container>
+    </div>
   );
 }
