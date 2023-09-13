@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Order } from '../../types/Order';
-import { OrderModal } from '../OrderModal';
-import * as S from './styles';
-import OrderService from '../../services/OrderService';
+import { Order } from '../types/Order';
+import { OrderModal } from './OrderModal';
+import OrderService from '../services/OrderService';
 import { toast } from 'react-toastify';
 
 type OrderBoardProps = {
@@ -62,8 +61,8 @@ export function OrderBoard({ icon, title, orders, onCancelOrder, onOrderStatusCh
   }
 
   return (
-    <S.Container>
-      <header>
+    <div className="p-4 border-gray-500/30 border rounded-2xl flex flex-col items-center flex-1">
+      <header className="p-2 text-sm flex items-center gap-2">
         <span>{icon}</span>
         <strong>{title}</strong>
         <span>({orders.length})</span>
@@ -79,15 +78,20 @@ export function OrderBoard({ icon, title, orders, onCancelOrder, onOrderStatusCh
       />
 
       {orders.length > 0 && (
-        <S.Content>
+        <div className="flex flex-col w-full mt-6">
           {orders.map((order) => (
-            <button type="button" key={order._id} onClick={() => handleOpenModal(order)}>
-              <strong>Table {order.table}</strong>
-              <span>{order.products.length} items</span>
+            <button
+              className="flex flex-col justify-center items-center bg-white border border-gray-500/30 rounded-lg h-32 w-full gap-1 [&:not(:first-of-type)]:mt-6"
+              type="button"
+              key={order._id}
+              onClick={() => handleOpenModal(order)}
+            >
+              <strong className="font-medium">Table {order.table}</strong>
+              <span className="text-sm text-gray-600">{order.products.length} items</span>
             </button>
           ))}
-        </S.Content>
+        </div>
       )}
-    </S.Container>
+    </div>
   );
 }
